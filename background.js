@@ -1,11 +1,11 @@
 let savedArticles = [];
 
-// Load saved articles when the extension starts
 chrome.storage.local.get(['savedArticles'], function(result) {
     if (result.savedArticles) {
         savedArticles = result.savedArticles;
     }
 });
+
 
 function saveArticle(title, dateTime, url) {
     chrome.storage.local.set({
@@ -27,40 +27,32 @@ function appendToFile(filename, data) {
 
 chrome.runtime.onInstalled.addListener(() => {
     console.log('Background script loaded');
-  });
-  
-  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log("Received message in background:", request);
-    if (request.action === "saveArticle") {
-        savedArticles.push(request.data);
-        appendToFile('saved_articles.json', JSON.stringify(savedArticles));
-        
-        // Only send a response if it's explicitly asked for
-        if (sendResponse && typeof sendResponse === 'function') {
-            sendResponse({ success: true });
-        }
-    }
 });
 
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === "saveArticle") {
+        const dateKey = new Date().toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
+        
+        chrome.storage.local.get(['savedArticles'], function(result) {
+            const articlesByDate = result.savedArticles || {};
+            
+            if (!articlesByDate[dateKey]) {
+                articlesByDate[dateKey] = [];
+            }
 
-function appendToFile(filename, data) {
-    chrome.fileSystem.chooseEntry({type: 'write'}, function(writableEntry) {
-        if (!writableEntry) {
-            console.error('No writable entry found');
-            return;
-        }
-
-        writableEntry.getFile(filename, {create: false}, function(fileEntry) {
-            fileEntry.createWriter(function(writer) {
-                writer.seek(writer.LENGTH_AT_END);
-                writer.write(data);
-            }, function(error) {
-                console.error('Error appending to file:', error);
+            articlesByDate[dateKey].push({
+                title: request.data.title,
+                dateTime: request.data.dateTime,
+                url: request.data.url
             });
-        }, function(error) {
-            console.error('Error getting file:', error);
+
+            chrome.storage.local.set({ savedArticles: articlesByDate }, function() {
+                console.log(`Article saved under date: ${dateKey}`);
+                
+                if (sendResponse && typeof sendResponse === 'function') {
+                    sendResponse({ success: true });
+                }
+            });
         });
-    }, function(error) {
-        console.error('Error accessing directory:', error);
-    });
-}
+    }
+});
