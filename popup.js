@@ -5,8 +5,16 @@ document.addEventListener('DOMContentLoaded', function() {
             chrome.tabs.sendMessage(
                 tabs[0].id,
                 {action: "injectButton"},
-                function(response) {}
+                function(response) {
+                    if (response && response.success) {
+                        console.log("Button injected successfully");
+                    } else {
+                        console.error("Failed to inject button");
+                    }
+                }
             );
         });
     });
 });
+
+console.log("Popup script loaded");
