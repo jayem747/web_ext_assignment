@@ -32,12 +32,24 @@ function injectButton() {
         button.addEventListener('click', function() {
             console.log('Button click registered');
             
-            const title = document.querySelector('.sc-3c404ba4-0.irijYp.sc-7411e22-3.dKAfIt').textContent.trim();
-            const dateTime = new Date().toISOString();
-            const url = window.location.href;
+            const timeElement = document.querySelector('time[datetime]');
 
-            chrome.runtime.sendMessage({ action: "saveArticle", data: { title, dateTime, url } });
-            console.log("Data sent to background script");
+            const dateTimeString = timeElement ? timeElement.getAttribute('datetime') : null;
+            
+            if (dateTimeString) {
+                const dateTime = new Date(dateTimeString);
+                
+                // Format the date as ISO 8601 string
+                const formattedDateTime = dateTime.toISOString();
+                
+                const title = document.querySelector('.sc-3c404ba4-0.irijYp.sc-7411e22-3.dKAfIt').textContent.trim();
+                const url = window.location.href;
+
+                chrome.runtime.sendMessage({ action: "saveArticle", data: { title, dateTime: formattedDateTime, url } });
+                console.log("Data sent to background script");
+            } else {
+                console.error("Could not find the publication date.");
+            }
         });
     }
 }

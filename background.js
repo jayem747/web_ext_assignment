@@ -31,28 +31,20 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "saveArticle") {
-        const dateKey = new Date().toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
-        
-        chrome.storage.local.get(['savedArticles'], function(result) {
-            const articlesByDate = result.savedArticles || {};
-            
-            if (!articlesByDate[dateKey]) {
-                articlesByDate[dateKey] = [];
-            }
+        const { title, dateTime, url } = request.data;
 
-            articlesByDate[dateKey].push({
-                title: request.data.title,
-                dateTime: request.data.dateTime,
-                url: request.data.url
-            });
+        // Log the contents of title, dateTime, and url
+        console.log("Received article details:");
+        console.log("Title:", title);
+        console.log("DateTime:", dateTime);
+        console.log("URL:", url);
 
-            chrome.storage.local.set({ savedArticles: articlesByDate }, function() {
-                console.log(`Article saved under date: ${dateKey}`);
-                
-                if (sendResponse && typeof sendResponse === 'function') {
-                    sendResponse({ success: true });
-                }
-            });
-        });
+        // Save the article using the saveArticle function
+        saveArticle(title, dateTime, url);
+
+        // Send a success response if needed
+        if (sendResponse && typeof sendResponse === 'function') {
+            sendResponse({ success: true });
+        }
     }
 });
