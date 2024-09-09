@@ -1,0 +1,18 @@
+{
+    "manifest_version": 2,
+    "name": "AQ Button Extension",
+    "version": "1.0",
+    "permissions": [
+      "activeTab"
+    ],
+    "browser_action": {
+      "default_popup": "index.html"
+    },
+    "content_scripts": [
+      {
+        "matches": ["*://nos.nl/artikel/*"],
+        "js": ["content_script.js"]
+      }
+    ]
+  }
+  
