@@ -1,3 +1,4 @@
+// content_script.js
 console.log("Content script injected successfully");
 
 // Listen for messages from the extension
@@ -34,6 +35,14 @@ function injectButton() {
         // Add event listener to the button
         button.addEventListener('click', function() {
             console.log('Button clicked!');
+            
+            // Scrape the required data
+            const title = document.querySelector('.sc-3c404ba4-0.irijYp.sc-7411e22-3.dKAfIt').textContent.trim();
+            const dateTime = new Date().toISOString();
+            const url = window.location.href;
+
+            // Send the data to the background script
+            chrome.runtime.sendMessage({ action: "saveArticle", data: { title, dateTime, url } });
         });
     }
 }
