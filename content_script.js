@@ -19,6 +19,10 @@ function injectButton() {
     }
 
     function injectButtonImmediately() {
+        console.log("Injecting button immediately");
+    }
+
+    function injectButtonImmediately() {
         let lastElement = document.body.lastChild;
 
         let button = document.createElement('button');

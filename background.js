@@ -77,6 +77,7 @@ loadSavedData();
 
 function saveArticle(title, dateTime, url) {
     const currentDate = new Date().toDateString();
+    console.log("Saving article:", {title, dateTime, url});
     if (!savedArticles[currentDate]) {
         savedArticles[currentDate] = [];
     }
@@ -87,8 +88,11 @@ function saveArticle(title, dateTime, url) {
     });
     
     // Save the entire savedArticles object
-    chrome.storage.local.set({ savedArticles: savedArticles });
+    chrome.storage.local.set({ savedArticles: savedArticles }, function() {
+        console.log("Saved article to local storage");
+    });
 }
+
 
 // Listen for messages from the content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -105,5 +109,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (sendResponse && typeof sendResponse === 'function') {
             sendResponse({ success: true });
         }
+    }
+});
+
+function getSavedArticles() {
+    console.log("Sending saved articles data");
+    return savedArticles;
+}
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (sender.tab) {
+        console.log("Received message from popup");
+        sendResponse({savedArticles: savedArticles});
     }
 });
