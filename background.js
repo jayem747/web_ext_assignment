@@ -1,4 +1,4 @@
-let savedArticles = [];
+let savedArticles = {};
 
 function loadSavedData() {
     chrome.storage.local.get(['savedArticles'], function(result) {
@@ -76,13 +76,18 @@ function saveToJSONFile() {
 loadSavedData();
 
 function saveArticle(title, dateTime, url) {
-    chrome.storage.local.set({
-        [`article_${Date.now()}`]: {
-            title: title,
-            dateTime: dateTime,
-            url: url
-        }
+    const currentDate = new Date().toDateString();
+    if (!savedArticles[currentDate]) {
+        savedArticles[currentDate] = [];
+    }
+    savedArticles[currentDate].push({
+        title: title,
+        dateTime: dateTime,
+        url: url
     });
+    
+    // Save the entire savedArticles object
+    chrome.storage.local.set({ savedArticles: savedArticles });
 }
 
 // Listen for messages from the content script
