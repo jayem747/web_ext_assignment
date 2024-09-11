@@ -15,7 +15,8 @@
   "content_scripts": [
     {
       "matches": ["*://nos.nl/artikel/*"],
-      "js": ["content_script.js"]
+      "js": ["content_script.js"],
+      "run_at": "document_end"
     }
   ]
 }

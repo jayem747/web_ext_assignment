@@ -1,13 +1,5 @@
 console.log("Content script injected successfully");
 
-// Listen for messages from the extension
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log("Received message from background:", request);
-    if (request.action === "injectButton") {
-        injectButton();
-    }
-});
-
 function injectButton() {
     console.log("Attempting to inject button");
     
@@ -57,3 +49,5 @@ function injectButton() {
         });
     }
 }
+
+injectButton();
