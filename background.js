@@ -94,21 +94,16 @@ function saveArticle(title, dateTime, url) {
 }
 
 
-// Listen for messages from the content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "saveArticle") {
         const { title, dateTime, url } = request.data;
         
-        // Save the article using the saveArticle function
         saveArticle(title, dateTime, url);
         
         // Optionally, save all articles to JSON file
         saveToJSONFile();
         
-        // Send a success response if needed
-        if (sendResponse && typeof sendResponse === 'function') {
-            sendResponse({ success: true });
-        }
+        sendResponse({ success: true });
     }
 });
 
@@ -118,8 +113,7 @@ function getSavedArticles() {
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (sender.tab) {
-        console.log("Received message from popup");
+    if (request.action === "getSavedArticles") {
         sendResponse({savedArticles: savedArticles});
     }
 });

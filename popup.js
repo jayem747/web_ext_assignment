@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    
     const injectButton = document.getElementById('injectButton');
     injectButton.addEventListener('click', function() {
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -16,9 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // New functionality for viewing saved articles
-    document.getElementById('viewSaves').addEventListener('click', function() {
-        chrome.runtime.sendMessage({}, function(response) {
+    const viewSavesButton = document.getElementById('viewSaves');
+    viewSavesButton.addEventListener('click', function() {
+        chrome.runtime.sendMessage({action: "getSavedArticles"}, function(response) {
             if (response && response.savedArticles) {
                 var savesContainer = document.getElementById('savesContainer');
                 if (savesContainer) {
