@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     const viewSavesButton = document.getElementById('viewSaves');
+    viewSavesButton.classList.add('view-saves-button')
     viewSavesButton.addEventListener('click', function() {
         chrome.runtime.sendMessage({action: "getSavedArticles"}, function(response) {
             if (response && response.savedArticles) {

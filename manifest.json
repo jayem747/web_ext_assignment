@@ -16,6 +16,7 @@
     {
       "matches": ["*://nos.nl/artikel/*"],
       "js": ["content_script.js"],
+      "css" : ["style.css"],
       "run_at": "document_end"
     }
   ]
