@@ -32,10 +32,9 @@ Develop a Chrome browser extension that enhances the user experience on [nos.nl]
 
 ## Installation
 
-1. Clone the repository:
+1. Clone the repository
 
-
-2. Open the folder in Google Chrome:
+2. Open the folder in Google Chrome
 
 
 ## Usage
