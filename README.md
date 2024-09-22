@@ -1,13 +1,10 @@
-# news saver extension
+# NOS web extension assignment
 
 ## Table of Contents
 - [Objective](#objective)
 - [Requirements](#requirements)
-- [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Objective
 
@@ -20,7 +17,7 @@ Develop a Chrome browser extension that enhances the user experience on [nos.nl]
 ## Requirements
 
 1. **Extension Functionality:**
-   - Add a "Save article" button to each news article on the [nos.nl](http://nos.nl/) main page.
+   - Add a "Save article" button to each news article on the [nos.nl](http://nos.nl/) website.
    - When clicked, save the news article details to a local JSON file.
    - Organize saved articles by date, creating a new entry for each day the user saves articles.
 
@@ -32,30 +29,14 @@ Develop a Chrome browser extension that enhances the user experience on [nos.nl]
    - Use Git for version control.
    - Create a public GitHub repository for the project.
 
-## Project Structure
-
-```
-aq-button-extension/
-├── manifest.json
-├── background.js
-├── content_script.js
-├── popup.html
-├── popup.js
-└── README.md
-```
 
 ## Installation
 
 1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/aq-button-extension.git
-   ```
+
 
 2. Open the folder in Google Chrome:
-   ```
-   cd aq-button-extension
-   chrome --load-extension .
-   ```
+
 
 ## Usage
 
